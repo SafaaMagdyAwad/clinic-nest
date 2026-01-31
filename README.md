@@ -1,98 +1,195 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Clinic Booking System - NestJS Backend
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This is the **backend API** for a **Clinic Booking System** built with **NestJS** and **TypeScript**.  
+The system allows **patients to register, view doctors, book appointments**, and **doctors to manage their availability and appointments**.  
+It also includes **admin features** for managing doctors, appointments, and statistics.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🏗️ Tech Stack
 
-## Project setup
+- **Backend Framework:** [NestJS](https://nestjs.com/)  
+- **Database:** MongoDB (Mongoose) / PostgreSQL (Prisma) *(choose your DB)*  
+- **Authentication:** JWT (JSON Web Token)  
+- **Validation:** class-validator, class-transformer  
+- **File Uploads:** Multer (for doctor profile pictures)  
+- **Environment Variables:** `.env` file for secrets, database, and server configs
 
-```bash
-$ npm install
+---
+
+## 📁 Project Structure
+
 ```
 
-## Compile and run the project
+src/
+├── auth/                  # Authentication module (login, register, JWT)
+├── doctors/               # Doctor module (profile, availability)
+├── patients/              # Patient module (profile, appointments)
+├── appointments/          # Appointment module (CRUD + status)
+├── medical-records/       # Patient medical records module
+├── admin/                 # Admin module (manage doctors, appointments)
+├── common/                # DTOs, Guards, Interfaces, Pipes
+├── main.ts                # Entry point
+└── app.module.ts          # Root module
+
+````
+
+---
+
+## 🔐 Authentication Flow
+
+- **Patient & Doctor Registration**: `/auth/register`
+- **Login**: `/auth/login`
+- JWT token returned on successful login
+- Protected routes require `Authorization: Bearer <token>`
+
+**Roles Supported:**
+- `PATIENT`
+- `DOCTOR`
+- `ADMIN`
+
+---
+
+## 🩺 Features
+
+### Patient
+- Register, Login
+- View and edit profile
+- Browse doctors and filter by specialty, rating, city
+- Book, cancel, reschedule appointments
+- View appointment history
+
+### Doctor
+- Login
+- Manage profile (bio, specialization, price, photo)
+- Manage availability (weekly schedule, time slots)
+- Approve/Reject appointments
+- Complete or cancel appointments
+- View dashboard stats (today's appointments, weekly summary)
+
+### Admin
+- Manage doctors (add/edit/delete)
+- Manage appointments (view, filter, status updates)
+- Dashboard analytics
+
+---
+
+## ⚡ Endpoints (Summary)
+
+**Auth:**
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/forgot-password`
+- `POST /auth/reset-password`
+
+**Patient:**
+- `GET /patients/me`
+- `PATCH /patients/me`
+- `GET /patients/me/appointments`
+- `POST /appointments`
+- `PATCH /appointments/:id/cancel`
+
+**Doctor:**
+- `GET /doctors/me`
+- `PATCH /doctors/me`
+- `GET /doctors/me/availability`
+- `POST /doctors/me/availability`
+- `PATCH /appointments/:id/approve`
+- `PATCH /appointments/:id/reject`
+- `PATCH /appointments/:id/complete`
+
+**Admin:**
+- `GET /admin/doctors`
+- `POST /admin/doctors`
+- `PATCH /admin/doctors/:id`
+- `DELETE /admin/doctors/:id`
+- `GET /admin/appointments`
+- `PATCH /admin/appointments/:id`
+
+---
+
+## ⚙️ Setup & Installation
+
+1. Clone the repository:
 
 ```bash
-# development
-$ npm run start
+git clone https://github.com/yourusername/clinic-booking-backend.git
+cd clinic-booking-backend
+````
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+2. Install dependencies:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+3. Create `.env` file based on `.env.example`:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+PORT=3000
+JWT_SECRET=your_jwt_secret
+DB_URI=mongodb://localhost:27017/clinic
+```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+4. Run the project in development:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+5. API will run at: `http://localhost:3000`
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🧪 Testing
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+* Unit and e2e tests with Jest
 
-## Support
+```bash
+npm run test
+npm run test:e2e
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 🌐 Postman / API Docs
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+* API documentation available via Swagger (optional)
 
-## License
+```ts
+// main.ts
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+const config = new DocumentBuilder()
+  .setTitle('Clinic Booking API')
+  .setDescription('API documentation for Clinic Booking System')
+  .setVersion('1.0')
+  .addBearerAuth()
+  .build();
+
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('api', app, document);
+```
+
+Visit: `http://localhost:3000/api`
+
+---
+
+## 👨‍💻 Contributions
+
+* Fork the repository
+* Create a new branch
+* Make your changes
+* Submit a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+```
+

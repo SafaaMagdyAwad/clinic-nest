@@ -5,6 +5,8 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { DoctorModel } from './modules/doctors/doctor.model';
+import { PatientModel } from './modules/patients/patient.model';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +16,8 @@ import { AuthModule } from './modules/auth/auth.module';
     DatabaseModule,
     UsersModule,
     AuthModule,
+    DoctorModel,
+    PatientModel,
   ],
   controllers: [AppController],
   providers: [AppService],

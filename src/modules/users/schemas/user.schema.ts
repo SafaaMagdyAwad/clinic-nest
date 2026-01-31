@@ -6,6 +6,7 @@ export type UserDocument = HydratedDocument<User>;
 export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
+  DOCTOR='doctor',
 }
 
 @Schema({ timestamps: true })
