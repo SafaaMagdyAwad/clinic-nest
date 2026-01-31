@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './src/app.module';
+import { AppModule } from './dist/app.module'; // use dist if TypeScript compiled
 import { ExpressAdapter } from '@nestjs/platform-express';
-import serverless from 'serverless-http'; // ✅ default import
-import  express from 'express';
+import express from 'express';
+import serverless from 'serverless-http';
 
 const expressApp = express();
 const adapter = new ExpressAdapter(expressApp);
@@ -14,4 +14,4 @@ async function bootstrap() {
 }
 bootstrap();
 
-export const handler = serverless(expressApp); // ✅ Works
+export const handler = serverless(expressApp);
