@@ -10,7 +10,7 @@ It also includes **admin features** for managing doctors, appointments, and stat
 ## 🏗️ Tech Stack
 
 - **Backend Framework:** [NestJS](https://nestjs.com/)  
-- **Database:** MongoDB (Mongoose) / PostgreSQL (Prisma) *(choose your DB)*  
+- **Database:** MongoDB (Mongoose)   
 - **Authentication:** JWT (JSON Web Token)  
 - **Validation:** class-validator, class-transformer  
 - **File Uploads:** Multer (for doctor profile pictures)  
@@ -39,13 +39,13 @@ src/
 
 ## 🔐 Authentication Flow
 
-- **Patient & Doctor Registration**: `/auth/register`
+- **Patient  Registration**: `/auth/register`
 - **Login**: `/auth/login`
 - JWT token returned on successful login
 - Protected routes require `Authorization: Bearer <token>`
 
 **Roles Supported:**
-- `PATIENT`
+- `USER`
 - `DOCTOR`
 - `ADMIN`
 
@@ -86,6 +86,7 @@ src/
 **Patient:**
 - `GET /patients/me`
 - `PATCH /patients/me`
+- `DELETE /patients/me`
 - `GET /patients/me/appointments`
 - `POST /appointments`
 - `PATCH /appointments/:id/cancel`
@@ -114,8 +115,8 @@ src/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/clinic-booking-backend.git
-cd clinic-booking-backend
+git clone https://github.com/SafaaMagdyAwad/clinic-nest.git
+cd clinic-nest
 ````
 
 2. Install dependencies:
@@ -127,7 +128,7 @@ npm install
 3. Create `.env` file based on `.env.example`:
 
 ```env
-PORT=3000
+PORT=5000
 JWT_SECRET=your_jwt_secret
 DB_URI=mongodb://localhost:27017/clinic
 ```
@@ -135,10 +136,10 @@ DB_URI=mongodb://localhost:27017/clinic
 4. Run the project in development:
 
 ```bash
-npm run start:dev
+npm run start
 ```
 
-5. API will run at: `http://localhost:3000`
+5. API will run at: `http://localhost:5000`
 
 ---
 
@@ -155,7 +156,7 @@ npm run test:e2e
 
 ## 🌐 Postman / API Docs
 
-* API documentation available via Swagger (optional)
+* API documentation available via Swagger 
 
 ```ts
 // main.ts
