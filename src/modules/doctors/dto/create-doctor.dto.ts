@@ -1,4 +1,3 @@
-import { UserRole } from './../../users/schemas/user.schema';
 import { 
     IsEmail,
     IsEnum,

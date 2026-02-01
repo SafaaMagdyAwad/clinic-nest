@@ -13,7 +13,7 @@ export class PatientController {
     @Roles(UserRole.USER)
     @Get('me')
     getMyProfile(@Req() req: Request & { user: { sub: string } }) {
-        console.log("controller", req.user.sub);
+        //console.log("controller", req.user.sub);
 
         return this.patientService.findById(req.user.sub);
     }

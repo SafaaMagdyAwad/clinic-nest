@@ -7,6 +7,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDTO } from './dto/reset.dto';
 import { ForgotPasswordDTO } from './dto/forgot.dto';
+import { response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +36,24 @@ export class AuthService {
     }
 
     async login(dto: LoginDto) {
+        //console.log(dto);
+        
         const user = await this.usersService.findByEmail(dto.email);
+        //user  user {
+//   _id: new ObjectId('697f9da5afa6100fdb29985a'),
+//   name: 'Dr Safaa',
+//   email: 'doctor@example.com',
+//   password: '123456',
+//   role: 'doctor',
+//   createdAt: 2026-02-01T18:38:29.814Z,
+//   updatedAt: 2026-02-01T18:38:29.814Z,
+//   __v: 0
+// }
+//         , response{
+//     "message": "Invalid credentials",
+//     "error": "Unauthorized",
+//     "statusCode": 401
+// }
         if (!user) throw new UnauthorizedException('Invalid credentials');
 
         const isMatch = await bcrypt.compare(dto.password, user.password);

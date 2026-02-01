@@ -12,7 +12,7 @@ export class UsersService {
   async findAll(filter:string) {
     return await this.userModel.find({role:filter}).exec();
   }
-  async findByEmail(email: string) {
+  async findByEmail(email: string) {    
     return this.userModel.findOne({ email }).exec();
   }
   async findById(id: string) {

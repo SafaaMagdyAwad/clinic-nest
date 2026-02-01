@@ -12,7 +12,7 @@ export class PatientService {
 
     async findById(id:string) {
         //only admin can cretae new doctor
-console.log(id);
+//console.log(id);
 
         const user = await this.usersService.findById(id);
         if (!user) throw new NotFoundException('User not found');

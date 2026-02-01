@@ -4,7 +4,7 @@ import { UsersService } from '../users/users.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UserRole } from '../users/schemas/user.schema';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
-import { string } from 'joi';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class DoctorService {
@@ -13,13 +13,11 @@ export class DoctorService {
     ) { }
 
     async create(dto: CreateDoctorDto) {
-        //only admin can cretae new doctor
-        console.log(dto, "dto");
-
+        const hashedPassword = await bcrypt.hash(dto.password, 10);
         const user = await this.usersService.create({
             name: dto.name,
             email: dto.email,
-            password: dto.password,
+            password: hashedPassword,
             role: UserRole.DOCTOR,
         });
 
@@ -65,7 +63,7 @@ export class DoctorService {
         };
     }
     async deleteDoctor(id: string) {
-       
+
 
         const user = await this.usersService.delete(id);
         if (!user) throw new NotFoundException('Users not found');

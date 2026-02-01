@@ -7,7 +7,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private configService: ConfigService) {
     const secret = configService.get<string>('JWT_SECRET');
- console.log(secret);
+ //console.log(secret);
  
     if (!secret) {
       throw new Error('JWT_SECRET is missing in .env');

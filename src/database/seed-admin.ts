@@ -14,11 +14,11 @@ async function seedAdmin() {
         }
 
         await mongoose.connect(mongoUri);
-        console.log('Connected to MongoDB');
+        //console.log('Connected to MongoDB');
 
         const existing = await UserModel.findOne({ email: 'adminsafaa@example.com' });
         if (existing) {
-            console.log('Admin already exists');
+            //console.log('Admin already exists');
             process.exit();
         }
 
@@ -32,7 +32,7 @@ async function seedAdmin() {
         });
 
         await admin.save();
-        console.log('Admin created successfully');
+        //console.log('Admin created successfully');
         process.exit();
     } catch (error) {
         console.error('Error seeding admin:', error);
