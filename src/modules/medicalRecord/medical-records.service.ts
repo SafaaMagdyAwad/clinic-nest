@@ -1,4 +1,3 @@
-import { Appointment } from './../appointment/schemas/appointment.schema';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -6,8 +5,6 @@ import { MedicalRecord, MedicalRecordDocument } from './schemas/medical-record.s
 import { CreateMedicalRecordDto } from './dto/create-medical-record.dto';
 import { UpdateMedicalRecordDto } from './dto/update-medical-record.dto';
 import { AppointmentsService } from '../appointment/appointment.service';
-import { string } from 'joi';
-import { log } from 'console';
 
 @Injectable()
 export class MedicalRecordsService {
