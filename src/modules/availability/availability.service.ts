@@ -13,27 +13,27 @@ export class AvailabilityService {
 
   async upsert(doctorId: string, dto: UpsertAvailabilityDto) {
     //console.log(dto);
-    const newAvail=this.availabilityModel.findOneAndUpdate(
+    const newAvail=await this.availabilityModel.findOneAndUpdate(
       { doctorId: new Types.ObjectId(doctorId) },
       { $set: dto },
       { new: true, upsert: true },
     );
     //console.log(newAvail);
     
-    return newAvail ;
+    return {message:"success" ,newAvail} ;
   }
 
   async getByDoctorId(doctorId: string) {
-    //console.log(doctorId ,"doctorId");
-    
+    //لازم ترجه النتيجه بس عشان مستخدماها في مكان تاني
     return this.availabilityModel.findOne({
       doctorId: new Types.ObjectId(doctorId),
     });
   }
 
   async deleteByDoctorId(doctorId: string) {
-    return this.availabilityModel.findOneAndDelete({
+    const availability= this.availabilityModel.findOneAndDelete({
       doctorId: new Types.ObjectId(doctorId),
     });
+    return {message:"success" , availability}
   }
 }

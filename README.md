@@ -140,7 +140,7 @@ npm run start
 ```
 
 5. API will run at: `http://localhost:5000`
-
+6. swagger run at: `http://localhost:5000/api`
 ---
 
 ## 🧪 Testing

@@ -1,5 +1,6 @@
 import { User } from './../../users/schemas/user.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';
 import { Appointment } from 'src/modules/appointment/schemas/appointment.schema';
 

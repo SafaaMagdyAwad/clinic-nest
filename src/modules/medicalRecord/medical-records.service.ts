@@ -18,13 +18,13 @@ export class MedicalRecordsService {
 
   ) { }
 
-  async create(dto: CreateMedicalRecordDto, doctorId) {
+  async create(dto: CreateMedicalRecordDto, doctorId:string) {
 
     if (!Types.ObjectId.isValid(dto.appointmentId)) {
       throw new BadRequestException('Invalid appointmentId');
     }
     const record = await this.medicalRecordModel.create({ ...dto, doctorId });
-    return record;
+    return {message:"success",record};
   }
 
   async findDoctorsAll(doctorId: string) {

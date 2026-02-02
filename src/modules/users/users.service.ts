@@ -1,6 +1,6 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
@@ -25,12 +25,34 @@ export class UsersService {
     const user = new this.userModel(userData);
     return user.save();
   }
-  async update(id: string, updateData: Partial<User>) {
-    const user = await this.userModel.findByIdAndUpdate(id, updateData, {
-      new: true,
+
+
+async update(id: string, updateData: Partial<User>) {
+  if (!Types.ObjectId.isValid(id)) throw new NotFoundException('Invalid id');
+
+  // لو بعت email جديد
+  if (updateData.email) {
+    const exists = await this.userModel.findOne({
+      email: updateData.email,
+      _id: { $ne: id }, // مش نفس اليوزر
     });
-    return user;
+
+    if (exists) {
+      throw new ConflictException(
+        'this email is registred for another account',
+      );
+    }
   }
+
+  const user = await this.userModel.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
+
+  if (!user) throw new NotFoundException('User not found');
+
+  return user;
+}
+
   async delete(id: string) {
     const user = await this.userModel.findByIdAndDelete(id);
     return user;

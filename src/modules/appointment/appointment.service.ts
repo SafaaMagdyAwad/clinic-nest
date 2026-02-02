@@ -7,6 +7,7 @@ import { Model, Types } from "mongoose";
 import { CreateAppointmentDto } from "./dto/create-appointment.dto";
 import { UpdateAppointmentDto } from "./dto/update-appointment.dto";
 import moment from 'moment-timezone';
+import { NOTFOUND } from 'dns';
 
 @Injectable()
 export class AppointmentsService {
@@ -25,16 +26,16 @@ export class AppointmentsService {
     // ✅ 1. تحقق من جدول الدكتور
     const doctorSchedule = await this.availabilityService.getByDoctorId(doctorId);
     //console.log(doctorSchedule, "doctorSchedule");
-    
+
     if (!doctorSchedule) {
       throw new BadRequestException('جدول توافر الدكتور غير موجود.');
     }
     const appointmentDay = moment(dto.dateTimeStart).tz(doctorSchedule.timezone).format('dddd').toUpperCase(); // eg: MONDAY
     //console.log(appointmentDay,"appointmentDay");
-    
+
     const scheduleForDay = doctorSchedule.weeklySchedule.find(d => d.day === appointmentDay);
     //console.log(scheduleForDay,"scheduleForDay");
-    
+
 
     if (!scheduleForDay || !scheduleForDay.isWorkingDay || !scheduleForDay.workingHours) {
       throw new BadRequestException('الدكتور غير متاح في هذا اليوم.');
@@ -84,28 +85,32 @@ export class AppointmentsService {
       doctorId: doctorObjectId,
     });
 
-    return appointment;
+    return { message: "success", appointment };
   }
 
 
   async findAll() {
-    return this.appointmentModel
+    const appointments = this.appointmentModel
       .find()
       .populate('doctorId', 'name email')
       .populate('patientId', 'name email')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+    return appointments;
   }
   async findAllDoctorAppointments(doctorId: string) {
     if (!Types.ObjectId.isValid(doctorId)) {
       throw new BadRequestException('Invalid doctorId');
     }
-
-    return this.appointmentModel
+    const appointments = this.appointmentModel
       .find({ doctorId: new Types.ObjectId(doctorId) })
       .populate('doctorId', 'name email')
       .populate('patientId', 'name email')
       .sort({ createdAt: -1 })
       .exec();
+    if (!appointments) {
+      throw new NotFoundException('appointments not found');
+    }
+    return appointments;
   }
 
   async findOne(id: string) {
@@ -115,7 +120,7 @@ export class AppointmentsService {
       .populate('patientId', 'name email');
 
     if (!appointment) throw new NotFoundException('Appointment not found');
-    return appointment;
+    return appointment
   }
 
   async update(id: string, dto: UpdateAppointmentDto) {
@@ -124,12 +129,14 @@ export class AppointmentsService {
     });
 
     if (!appointment) throw new NotFoundException('Appointment not found');
-    return appointment;
+    return {
+      message: "success", appointment
+    };
   }
 
   async remove(id: string) {
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
     if (!appointment) throw new NotFoundException('Appointment not found');
-    return { message: 'Appointment deleted successfully' };
+    return { message: 'Appointment deleted successfully', appointment };
   }
 }
