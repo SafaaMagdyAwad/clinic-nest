@@ -128,9 +128,10 @@ npm install
 3. Create `.env` file based on `.env.example`:
 
 ```env
+MONGO_URI=
 PORT=5000
-JWT_SECRET=your_jwt_secret
-DB_URI=mongodb://localhost:27017/clinic
+JWT_SECRET=
+JWT_EXPIRES=7d
 ```
 
 4. Run the project in development:
@@ -173,7 +174,7 @@ const document = SwaggerModule.createDocument(app, config);
 SwaggerModule.setup('api', app, document);
 ```
 
-Visit: `http://localhost:3000/api`
+Visit: `http://localhost:5000/api`
 
 ---
 

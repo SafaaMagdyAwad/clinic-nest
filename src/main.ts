@@ -27,7 +27,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   // await app.listen(process.env.PORT ?? 5000);
   if (process.env.NODE_ENV !== 'production') {
-  await app.listen(3000);
+  await app.listen(process.env.PORT ?? 5000);
 }
 
 }
