@@ -25,6 +25,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   // Global error handling
   app.useGlobalFilters(new AllExceptionsFilter());
-  await app.listen(process.env.PORT ?? 5000);
+  // await app.listen(process.env.PORT ?? 5000);
+  if (process.env.NODE_ENV !== 'production') {
+  await app.listen(3000);
+}
+
 }
 bootstrap();
